@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF8"> 
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js" type="text/javascript"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='lib/js/crossfilter.min.js') }}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.9/dc.min.js"></script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/helperFunctions.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/datahandler.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/charts.js') }}"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.9/dc.min.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/custom.css')}}" media="screen" />
+
+  </head>
+  <body>
+    <!-- This is the nav bar-->
+    <div class="navbar navbar-fixed-top" role="navigation" id="headerBar">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+          <a class="navbar-brand" href="./">DashPractice</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="">Snapshot</a></li>
+            <li><a href="">Movement</a></li>
+            <li><a href="">Lookup</a></li>
+            <li><a href="">Model &amp; Forecast</a></li>
+            <li><a href="">On the Go</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="row" id="filterizerRow">
+        <div class="chart-notes" id="filterizerNote">
+          Choose a timeframe
+        </div>
+        <div class="chart-stage" id="dailyHits-filterizer">
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+
+<!--       <div class="row">
+        <div class="col-sm-12 col-md-12">
+          <div class="chart-wrapper">
+            <div class="chart-title">
+            </div>
+            <div class="chart-stage" id="dailyHits-filterizer">
+            </div>
+            <div class="chart-notes">
+              Choose a timeframe
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <div class="row">
+        <div class="col-sm-6 col-md-6">
+          <div class="chart-wrapper">
+            <div class="chart-title">
+              Percentage of Surgical Patients
+            </div>
+            <div class="chart-stage" id="percSurgical">
+            </div>
+            <div class="chart-notes">
+              True is Surgical, False is Non-Surgical. Data is for the selected timeframe
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-6">
+          <div class="chart-wrapper">
+            <div class="chart-title">
+              Total number of patients
+            </div>
+            <div class="chart-stage hero" id="totalNumber">
+            </div>
+            <div class="chart-notes">
+              Seen in the selected timeframe
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 col-md-12">
+          <div class="chart-wrapper">
+            <div class="chart-title">
+              Practices by patients seen
+            </div>
+            <div class="chart-stage" id="pracDist">
+            </div>
+            <div class="chart-notes">
+              Total Surgical and Non-Surgical from each practice for the selected timeframe
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6 col-md-6">
+          <div class="chart-wrapper">
+            <div class="chart-title">
+              Surgical vs. Non-Surgical by referrer
+            </div>
+            <div class="chart-stage" id="refDocScatter">
+            </div>
+            <div class="chart-notes">
+              Each point represents 1 referring doctor. 
+              His/Her coordinates is the total number of surgical and non-surgical patients seen during the given timeframe.
+              Points above the x=y line tell you who has a net-positive referral.
+              Distance represents the distance from the x=y line.
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-md-6">
+          <div class="chart-wrapper">
+            <div class="chart-title">
+              Appropriateness vs Complexity
+            </div>
+            <div class="chart-stage" id="appCompHeat">
+            </div>
+            <div class="chart-notes">
+              The color intensity refers to the number of patients seen with that score.
+              Darker orange means more patients.  You want there to be a heavy concentration in the upper left. 
+              And a low concentration in the lower right.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>
