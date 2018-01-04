@@ -1,5 +1,4 @@
 import psycopg2
-from pprint import pprint
 import json
 from datetime import date
 from datetime import datetime
