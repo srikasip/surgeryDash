@@ -15,7 +15,7 @@ def index():
 def dashboard_patients():
   colNames = ["ClinicDate", "IsDirect", "WasScreened", "ScreenDate", "IsSurgical", "AppScore", "ComplexityScore"]
   colNames += ["ValueScore", "Location", "Diagnosis", "Referring_Doc", "Practice", "Insurance", "IsMedicaid"]
-  print colNames
+  print(colNames)
   allPatients_json = surgDB.getJSON("ServerDatafiles/mainSelect.sql", colNames)
   return jsonify(allPatients_json)
 
@@ -34,8 +34,8 @@ def gooboard_patientCount():
   filehand = "ServerDatafiles/overallPatientCount.sql"
   #print('Start Date: ' + startDate)
   #print('End Date: ' + endDate)
-  print request.args['startDate']
-  print request.args['endDate']
+  print(request.args['startDate'])
+  print(request.args['endDate'])
   allPatients_googleData = surgDB.getGoogleFormattedData(filehand, colNames)
   return jsonify(allPatients_googleData)
 
