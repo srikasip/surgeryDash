@@ -4,10 +4,12 @@ from datetime import date
 from datetime import datetime
 from operator import itemgetter
 
-database = "SurgeryDashDB"
-user = "srikasip"
-host = "localhost"
-password = ""
+database = "d47tunqullfegl"
+user = "hsjcwbnmmxtndd"
+host = "ec2-54-225-255-132.compute-1.amazonaws.com"
+port ='5432'
+password = "d0b8ebd8460008cb897a7afc2cee5faeb3134dc5d1a37ed4edac1f1e2fc4ef31"
+
 
 def getRefDocMedians(sentFileName, colNames):
   data = getJSON(sentFileName, colNames)
@@ -128,13 +130,13 @@ def getJSON(filename, colNames):
   return allData
 
 def connectToDB(command):
-  conn = psycopg2.connect("dbname='"+database+"' user='"+user+"' host='"+host+"' password='"+password+"'")
+  conn = psycopg2.connect("dbname='"+database+"' user='"+user+"' host='"+host+"' password='"+password+"' port="+port)
 
   cur = conn.cursor()
   cur.execute(command)
 
   allData = cur.fetchall()
-
+  
   conn.close()
 
   return allData
