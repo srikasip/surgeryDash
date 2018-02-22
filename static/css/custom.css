@@ -33,6 +33,7 @@ html, body{
   background-color:#9ebed8;
   color:rgb(10,25,40);
   border-radius: 10px;
+  clear:both;
 }
 
 .row{
@@ -65,3 +66,40 @@ html, body{
 {
   margin:16px;
 }
+.buttonHolder
+{
+  float:none;
+  clear:both;
+  width:100%;
+  text-align:center;
+}
+.mainChooser
+{
+  float:none;
+  clear:both;
+  margin-right:auto;
+  margin-left:auto;
+}
+
+#searchHolder
+{
+  width:100%;
+  float:none;
+  clear:both;
+  text-align:center;
+  padding-top:1em;
+}
+#searchBox
+{
+  width:80%;
+  height:2em;
+  border-radius:5px;
+  color:#303030;
+}
+
+.ui-autocomplete-category {
+    font-weight: bold;
+    padding: .2em .4em;
+    margin: .8em 0 .2em;
+    line-height: 1.5;
+  }

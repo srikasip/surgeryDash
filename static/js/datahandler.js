@@ -22,7 +22,7 @@ function setupCrossFilter(data){
   //Set up a dimension on each column in the crossfilter
   var clinicDateDim = ndx.dimension(function(d){return d.ClinicDate; });
   var isSurgicalDim = ndx.dimension(function(d){return d.IsSurgical; });
-  var appCompScoreDim = ndx.dimension(function(d){return [d.AppScore, d.ComplexityScore]})
+  var appCompScoreDim = ndx.dimension(function(d){return [d.AppScore, d.ComplexityScore];})
   var referringDoctorDim = ndx.dimension(function(d){return d.Referring_Doc; });
   var practiceDim = ndx.dimension(function(d){return d.Practice;});
 

@@ -4,20 +4,52 @@ from datetime import date
 from datetime import datetime
 from operator import itemgetter
 
-database = "d47tunqullfegl"
-user = "hsjcwbnmmxtndd"
-host = "ec2-54-225-255-132.compute-1.amazonaws.com"
-port ='5432'
-password = "d0b8ebd8460008cb897a7afc2cee5faeb3134dc5d1a37ed4edac1f1e2fc4ef31"
+# database = "d47tunqullfegl"
+# user = "hsjcwbnmmxtndd"
+# host = "ec2-54-225-255-132.compute-1.amazonaws.com"
+# port ='5432'
+# password = "d0b8ebd8460008cb897a7afc2cee5faeb3134dc5d1a37ed4edac1f1e2fc4ef31"
+
+database = "SurgeryDashDB"
+user = "srikasip"
+host = "localhost"
+port =''
+password = ''
+
+def customSearchQuery(cat, val, colNames):
+  filename = "ServerDatafiles/customMainSelect.sql"
+  whereDict = {
+    'Practices':{'tableName':'pr', 'searchCol':'id'},
+    'Referrers':{'tableName':'d', 'searchCol':'id'},
+    'Insurances':{'tableName':'ins', 'searchCol':'id'},
+    'Diagnoses':{'tableName':'diag', 'searchCol':'id'},
+    'Patients':{'tableName':'p', 'searchCol':'id'}
+  }
+
+  with open(filename, "rU") as sqlFile:
+    command = sqlFile.read()
+  
+  whereClause = whereDict[cat]['tableName'] + "." + whereDict[cat]['searchCol'] + " = " + str(val)
+  command = command.replace('--||WHERECLAUSE||--',whereClause)
+  returnedData = connectToDB(command)
+
+  allData = []
+  for row in returnedData:
+    counter = 0
+    rowData = {}
+    for colName in colNames:
+      rowData[colName] = row[counter]
+      counter += 1
+    allData.append(rowData)
+
+
+  return allData  
 
 
 def getRefDocMedians(sentFileName, colNames):
   data = getJSON(sentFileName, colNames)
   return returnObj
-
-
-
-
+  
 def getWhaleProv(sentFileName):
   data = getJSON(sentFileName, ["Name", "NumSurgeries", "NumNonSurgeries", "Total"])
   returnObj = calcWhaleCurve(data)

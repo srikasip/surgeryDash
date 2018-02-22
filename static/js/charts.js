@@ -15,9 +15,110 @@ function getColorMap(val, lowerbound, upperbound)
   r = 255 * ((val - lowerbound)/(upperbound - lowerbound));
   red = rgbToHex(r);
   rgb = "#" + red + "20FF";
-  console.log(r);
-  console.log(rgb);
   return rgb;
+}
+function setTimeline(dom_id, sentDimension, sentGroup, x_tickLabels, x_label, y_label, key_acc, val_acc, ser_acc,turnx_labels=false, isOrderingSet = false, orderingFunction=function(d){}){
+  var width = $(dom_id).parent().innerWidth();
+  var height = 400;
+  var focusChart = dc.seriesChart(dom_id);
+
+  focusChart
+    .width(width)
+    .height(height)
+     .chart(function(c) { return dc.lineChart(c).interpolate('cardinal').evadeDomainFilter(false); })
+    .x(d3.scale.ordinal().domain(x_tickLabels).range(x_tickLabels))
+    .xUnits(dc.units.ordinal)
+    .y(d3.scale.linear().domain([0,3]))
+    .yAxisLabel(y_label)
+    .xAxisLabel(x_label)
+    .elasticY(true)
+    .dimension(sentDimension)
+    .group(sentGroup)
+    .mouseZoomable(true)
+
+    .seriesAccessor(ser_acc)
+    .keyAccessor(key_acc)
+    .valueAccessor(val_acc);
+
+  if(isOrderingSet){
+    focusChart.ordering(orderingFunction);
+  }
+  focusChart.renderlet(function(chart){
+    chart.selectAll("g.x text").style("text-anchor", "end");
+    if(turnx_labels){
+      chart.selectAll("g.x text").attr('transform', 'translate(-10,10) rotate(315)');
+    }
+  });
+  if(turnx_labels){
+    focusChart.margins({top: 5, right: 0, bottom: 75, left: 0});
+  }
+  else{
+    // focusChart.legend(dc.legend().x(60).y(20).itemHeight(13).gap(5).horizontal(1).legendWidth(width).itemWidth(150));
+  }
+  focusChart.legend(dc.legend().x(60).y(20).itemHeight(13).gap(5).horizontal(1).legendWidth(width).itemWidth(150));
+  focusChart.render();
+  print_filter(sentGroup);
+}
+function setSeriesChart(dom_id, sentDimension, sentGroup, seriesAcc, x_acc, y_acc, x_label, y_label, x_tickLabels)
+{
+  console.log(allColors);
+  console.log(allNames);
+  //print_filter(sentDimension);
+  //print_filter(sentGroup);
+  var width = $(dom_id).parent().innerWidth();
+  var height = 400;
+  var focusChart = dc.seriesChart(dom_id);
+
+  focusChart
+    .width(width)
+    .height(height)
+    //.chart(function(c) { return dc.lineChart(c).interpolate('cardinal'); })
+    .chart(function(c) { return dc.lineChart(c).interpolate('cardinal').evadeDomainFilter(true); })
+    //.x(d3.scale.linear().domain([x_tickLabels[0],x_tickLabels[x_tickLabels.length-1]])) // Need empty val to offset first value
+    //.y(d3.scale.linear().domain([-2, 2]))
+    //.xUnits(dc.units.decimal) // Tell dc.js that we're using an ordinal x-axis
+    //.x(d3.scale.ordinal().domain(x_tickLabels.splice(0,0,"0")).range(x_tickLabels))
+    //.x(d3.scale.ordinal().domain(x_tickLabels.splice(0,0,"0")).range(x_tickLabels.splice(0,0,"0")))
+    .x(d3.scale.ordinal().domain(x_tickLabels).range(x_tickLabels))
+    .xUnits(dc.units.ordinal)
+    .brushOn(false)
+    //.colors(allColors)
+    .y(d3.scale.linear().domain([-1,3]))
+    .yAxisLabel(y_label)
+    .xAxisLabel(x_label)
+    //.elasticY(true)
+    .dimension(sentDimension)
+    .group(sentGroup)
+    .mouseZoomable(true)
+    .seriesAccessor(function(d) {return d.key[0];})
+    .keyAccessor(function(d) {return d.key[1];})
+    //.colorAccessor(function(d){return allNames.indexOf(d.key[0]);})
+    .title(function (p) {
+            return [
+              'Name: ' + p.key[0],
+              'Quarter: ' + p.key[1],
+              'Percent Change: ' + String(p.value[y_acc] * 100) + "%",
+              'Num Patients: ' + String(p.value["numPatients"]),
+              'Num Surgical: ' + String(p.value["numSurgical"]),
+              'Quarterly Average (All): ' + String(p.value["qAvgPatients"]),
+              'Quarterly Average (Surgical): ' + String(p.value["qAvgSurgical"])
+
+            ].join('\n');})
+    .valueAccessor(function(d) {return d.value[y_acc];});
+    //.legend(dc.legend().x(0).y(500).itemHeight(13).gap(5).horizontal(1).legendWidth(width).itemWidth(150));
+  focusChart.yAxis().tickFormat(function(v){return (String(v*100) + '%');});
+  // focusChart.yAxis().tickFormat(function(d) {return d3.format(',d')(d+299500);});
+  focusChart.margins().left += 40;
+
+  focusChart.renderlet(function(chart){
+  chart.selectAll("g.x text")
+    .style("text-anchor", "end");
+    // .style("fill", "#fff");
+  });
+
+  focusChart.render();
+  focusChart.redraw();
+
 }
 
 function setHeatmap(dom_id, sentDimension,sentGroup, x_label, x_index, y_label, y_index, lowerbound, upperbound)
@@ -104,9 +205,9 @@ function setScatterChart(dom_id, sentDimension, sentGroup, x_prop, y_prop, xTitl
 
 }
 function setBarChart(dom_id, sentDimension, width=0, height=400, allGroups, xTitle, yTitle){
-  console.log(dom_id);
-  console.log(sentDimension.top(Infinity).length);
-  console.log(allGroups[0].data.size());
+  //console.log(dom_id);
+  // console.log(sentDimension.top(Infinity).length);
+  // console.log(allGroups[0].data.size());
   if(width == 0){
     width = $(dom_id).parent().innerWidth();
   }
@@ -235,6 +336,7 @@ function setPieChart(dom_id, sentDimension, width=0, height=400, allGroups, yTit
 function setCounter(sentDimension){
   var totalNumber = sentDimension.top(Infinity).length;
   $('#totalNumber').html(totalNumber);
+
 }
 
 function getLineYisXData(lowerbound, upperbound){
