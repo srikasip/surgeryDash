@@ -16,6 +16,12 @@ password = "d0b8ebd8460008cb897a7afc2cee5faeb3134dc5d1a37ed4edac1f1e2fc4ef31"
 # port =''
 # password = ''
 
+# database = "SurgFakeNameDB"
+# user = "srikasip"
+# host = "localhost"
+# port =''
+# password = ''
+
 def customSearchQuery(cat, val, colNames):
   filename = "ServerDatafiles/customMainSelect.sql"
   whereDict = {

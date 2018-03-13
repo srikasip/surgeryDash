@@ -112,6 +112,7 @@ function setupSeriesChart(){
   typeGroup = getAggOnQuarterData(allTypesDim);
 
   setSeriesChart("#PracticePC", allTypesDim, typeGroup, "", "", "percChangeTotal", "Quarters", "Percent Change", quarters);
+  //setPieChart("#PracticePC", allTypesDim, width=0, height=400, typeGroup, "Percent Change");
 }
 
 function getAggOnQuarterData(sentDim){
